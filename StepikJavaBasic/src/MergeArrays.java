@@ -1,10 +1,11 @@
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class MergeArrays {
     public static void main(String[] args) {
-        int[] a1 = {0, 2, 2};
-        int[] a2 = {};
+        int[] a1 = {21, 23, 24, 40, 75, 76, 78};
+        int[] a2 = {10, 11, 41, 50, 65, 86, 98, 101};
 
         System.out.println(Arrays.toString(mergeArrays(a1, a2)));
     }
@@ -18,28 +19,48 @@ public class MergeArrays {
      */
     public static int[] mergeArrays(int[] a1, int[] a2) {
 
-        int[] b = new int[a1.length + a2.length];
-
-
-        int j = 1;
-        for (int i = 0; i < Math.min(a1.length, a2.length); i++) {
-            if (a1[i] < a2[i]) {
-                b[j] = a1[i];
-                b[j + 1] = a2[i];
-            } else {
-                b[j] = a2[i];
-                b[j + 1] = a1[i];
-            }
-            j += 2;
-        }
-
         if (a1.length == 0) {
-            b = a2;
+            return a2;
         }
         if (a2.length == 0) {
-            b = a1;
+            return a1;
         }
 
+
+        int[] b = new int[a1.length + a2.length];
+
+        int j1 = 0;
+        int j2 = 0;
+        for (int i = 0; i < b.length; i++) {
+
+            if (a1[j1] < a2[j2]) {
+                b[i] = a1[j1++];
+            } else {
+                b[i] = a2[j2++];
+            }
+
+            if (j1 >= a1.length) {
+                j2++;
+            }
+            if (j2 >= a2.length) {
+                j1++;
+            }
+            if (j1 >= a1.length - 1) {
+                j1 = a1.length - 1;
+            }
+            if (j2 >= a2.length - 1) {
+                j2 = a2.length - 1;
+            }
+
+            if (i == b.length - 1) {
+                if (a1[j1] > a2[j2]) {
+                    b[i] = a1[j1];
+                } else {
+                    b[i] = a2[j2];
+                }
+            }
+
+        }
 
         return b; // your implementation here
     }
